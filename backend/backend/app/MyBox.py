@@ -16,6 +16,7 @@
 
 from time import sleep
 from transitions import Machine
+from threading import Thread
 
 
 class MyBox(Machine):
@@ -27,16 +28,30 @@ class MyBox(Machine):
         :param my_transitions: Триггеры переходов.
         :param add_transition: Добавление условного перехода
     """   
-    TIMEOUT = 5.0
+    TIMEOUT = 5.0 # задержка таймера
 
-    def is_timeout(self): 
+    def stop(self, delay_time):
         """
-            Функция таймера
+            Целевая функция для self.on_timeout()
+
+            :param delay_time: время задержки в секундах
         """
-        sleep(self.TIMEOUT)
-        return True
-    
+        sleep(delay_time)
+        if self.state == 'Дверь открыта':
+            self.state = 'Закройте дверь'
+        return self.state
+
+    def on_timeout(self): 
+        """
+            Функция таймера в отдельном потоке
+        """
+        box_open = Thread(target=self.stop, args=(self.TIMEOUT,))
+        box_open.start()
+        box_open.join()
+
+    # Конструктор
     def __init__(self):
+        # Состояния
         self.my_states = [
             'Введите пароль',
             'Дверь открыта',
@@ -45,9 +60,9 @@ class MyBox(Machine):
         ]
         # Переходы:       
         self.my_transitions = [
-            { 'trigger': 'good_password', 'source': 'Введите пароль', 'dest': 'Дверь открыта' },
+            { 'trigger': 'good_password', 'source': 'Введите пароль', 'dest': 'Дверь открыта', 'after': 'on_timeout' },
             { 'trigger': 'closed', 'source': ['Дверь открыта', 'Закройте дверь'], 'dest': 'Введите пароль' },
-            { 'trigger': 'timeout', 'source': 'Дверь открыта', 'dest': 'Закройте дверь', 'conditions': 'is_timeout' },    
+            { 'trigger': 'timeout', 'source': 'Дверь открыта', 'dest': 'Закройте дверь' },    
             { 'trigger': 'bad_password', 'source': 'Введите пароль', 'dest': 'Неверный пароль' },
             { 'trigger': 'repeat', 'source': 'Неверный пароль', 'dest': 'Введите пароль' }
             ]
@@ -58,8 +73,8 @@ class MyBox(Machine):
             transitions=self.my_transitions,
             initial = 'Введите пароль'
             )
-        
-        self.add_transition('timeout', 'Дверь открыта', 'Закройте дверь', conditions='is_timeout')
+
+
         
     def __str__(self):
         s = f"\tСоздается экземпляр класса Transitions для состояний:\n\
@@ -69,20 +84,29 @@ class MyBox(Machine):
 
 
 def main():
-   return MyBox()
-   
+   return MyBox() 
+
 def test():
+   """
+    Функция для тестирования работы класса
+   """  
    machine = MyBox()
-   machine.__str__()
-   print("\n")
-   print(machine.state)
-   machine.good_password()      
-   print(machine.state)
-   machine.timeout()     
-   print(machine.state)     
-   #sleep(7)
-   machine.closed()
-   print(machine.state)
+   def ft1(): 
+    machine.good_password()
+
+   def ft2(t):
+    sleep(t)
+    if (machine.state == 'Дверь открыта'):
+        machine.timeout()  
+
+   print(machine.state) # исходное состояние
+   t1 = Thread(target=ft1, args=())   
+   t2 = Thread(target=ft2, args=(1,))
+   t1.start()
+   t2.start()
+   t1.join()
+   t2.join()     
+   print(machine.state) # состояние
 
 
 if __name__ == "__main__":
