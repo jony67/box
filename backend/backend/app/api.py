@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-
+from backend.settings import settings
 
 app = FastAPI(
     title="Камера хранения",
@@ -26,11 +26,7 @@ class Status(BaseModel):
     code: int = 200  
     status: str = "Ok"
 
-      
 
-@app.get("/")
+@app.get(settings.main_url)
 async def get_state() -> dict:
     return dict(Status())
-
-  
-
