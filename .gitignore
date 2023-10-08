@@ -1,5 +1,6 @@
-# Мои файлы
+# РњРѕРё С„Р°Р№Р»С‹
 *.txtm
+*_dev.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

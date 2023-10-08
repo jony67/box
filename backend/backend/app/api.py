@@ -1,7 +1,10 @@
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from backend.settings import settings
+#from backend.settings import settings
+# Отладка
+from backend.settings_dev import settings
 
 app = FastAPI(
     title="Камера хранения",
@@ -23,7 +26,9 @@ app.add_middleware(
 )
 
 class Status(BaseModel):
-    code: int = 200  
+    """
+        Класс для проверки URL
+    """
     status: str = "Ok"
 
 

@@ -1,13 +1,13 @@
 from pathlib import Path
-from pydantic_settings import BaseSettings, SettingsConfigDict
-
-ENV_PATH = Path(Path(__file__).parent,'.env')
+from pydantic_settings import BaseSettings
+import os
+main_url = os.getenv("MAIN_URL")
  
 class Settings(BaseSettings):
-    main_url: str =""
-
-    model_config = SettingsConfigDict(env_file=ENV_PATH,  env_file_encoding='utf-8')
-         
+    """
+        Класс настроек
+    """
+    main_url: str
+        
 
 settings = Settings()
-#print(Settings().model_dump())
