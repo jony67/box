@@ -1,10 +1,7 @@
 from fastapi import FastAPI
+from backend.app.box_router import router
 from fastapi.responses import FileResponse
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-#from backend.settings import settings
-# Отладка
-from backend.settings_dev import settings
 
 app = FastAPI(
     title="Камера хранения",
@@ -25,13 +22,5 @@ app.add_middleware(
         allow_headers=["*"]
 )
 
-class Status(BaseModel):
-    """
-        Класс для проверки URL
-    """
-    status: str = "Ok"
 
-
-@app.get(settings.main_url)
-async def get_state() -> dict:
-    return dict(Status())
+app.include_router(router)
