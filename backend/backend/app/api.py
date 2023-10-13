@@ -1,26 +1,22 @@
 from fastapi import FastAPI
 from backend.app.box_router import router
-from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from backend.settings import settings_Dev
+
 
 app = FastAPI(
-    title="Камера хранения",
-    description="Бэкенд, реализующий модель камеры хранения"
+    title=settings_Dev.APP_NAME,
+    version=settings_Dev.VERSION,
+    description=settings_Dev.DESCRIPTION
     )
-
-origins = [
-    "http://127.0.0.1:3000",
-    "http://localhost:3000"
-]
 
 
 app.add_middleware(
         CORSMiddleware,
-        allow_origins=origins,
+        allow_origins=settings_Dev.BACKEND_CORS_ORIGINS,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"]
 )
-
 
 app.include_router(router)
