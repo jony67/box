@@ -9,5 +9,5 @@ def test_answer():
     result = client.get(settings.main_url)
     assert result.status_code == 200
     assert result.json() == {
-        "status":"Ok"
+        "Status": "OK"
     }
