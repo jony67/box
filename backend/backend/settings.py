@@ -22,7 +22,7 @@ class User(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
-                    "password": "12345",
+                    "password": "qwerty",
                 }
             ]
         }

@@ -13,9 +13,10 @@
 
     @author: sev
 """
-from time import sleep as sleep
+from time import sleep
 from transitions import Machine
 from threading import Thread
+from threading import Timer 
 
 
 class MyBox(Machine):
@@ -29,19 +30,27 @@ class MyBox(Machine):
     """   
     TIMEOUT = 10.0 # задержка таймера
 
+  
+    def f(self):
+        """
+            Функция автоматического перехода в состояние 'Закройте дверь'
+        """
+        if self.state == 'Дверь открыта':
+            self.timeout()
+        else:
+            exit    
+    
     def on_delay(self, delay_time):
         """
             Целевая функция для self.on_timeout()
 
             :param delay_time: время задержки в секундах
         """
-        sleep(delay_time)
-        if self.state == 'Дверь открыта':
-            self.timeout()
-        else:
-           exit
+        timer = Timer(delay_time, self.f) 
+        timer.start()
 
-    def on_timeout(self): 
+
+    def on_timeout(self):
         """
             Функция таймера в отдельном потоке
             
@@ -84,13 +93,9 @@ class MyBox(Machine):
         return print(s) 
 
 
-
-def main():
-   return MyBox() 
-
-def test(delay):
+def test_my_box(delay):
    """
-    Функция для тестирования работы класса. Если delay < TIMEOUT,
+    Функция для тестирования работы класса в потоках. Если delay < TIMEOUT,
     то имитируем ситуацию, когда пользователь закрыл камеру
     хранения до истечения времени напоминания, если delay > TIMEOUT,
     то имитируем ситуацию, когда система перешла в режим напоминания
@@ -98,24 +103,28 @@ def test(delay):
 
     :param delay: Время задержки
    """  
+   def ft1(my_machine):
+    print("1-й поток. Исходное состояние, затем сразу следует ввод пароля: ", my_machine.state)
+    my_machine.good_password()
+    print("1-й поток. Таймер автоматического перехода TIMEOUT запущен: ", my_machine.state)
+    if (my_machine.state == 'Закройте дверь'):
+        my_machine.close()  
+        print("1-й поток. Пользователь закрыл камеру хранения: ", my_machine.state)
+
+   def ft2(my_machine,t):
+    sleep(t)  
+    if (my_machine.state == 'Дверь открыта'):
+        my_machine.close()  
+        print("2-й поток. Пользователь закрыл камеру хранения: ", my_machine.state)
+    else:
+        print("2-й поток. Сработал автоматический переход: ", my_machine.state)
+        sleep(3)
+        my_machine.close()
+        print("2-й поток. Пользователь закрыл камеру хранения: ", my_machine.state)
+   
    machine = MyBox()
-   def ft1():
-    print("1-й поток. Исходное состояние, затем сразу следует ввод пароля: ", machine.state)
-    machine.good_password()
-    print("1-й поток. Сработал таймер перехода TIMEOUT: ", machine.state)
-    if (machine.state == 'Закройте дверь'):
-        machine.close()  
-        print("1-й поток. Пользователь закрыл камеру хранения: ", machine.state)
-
-   def ft2(t):
-    print("2-й поток. Ожидаем команды закрытия от пользователя: ", machine.state)
-    sleep(t)
-    if (machine.state == 'Дверь открыта'):
-        machine.close()  
-        print("2-й поток. Пользователь закрыл камеру хранения: ", machine.state)
-
-   t1 = Thread(target=ft1, args=(), daemon=True)   
-   t2 = Thread(target=ft2, args=(delay,), daemon=True)
+   t1 = Thread(target=ft1, args=(machine,), daemon=True)   
+   t2 = Thread(target=ft2, args=(machine,delay,), daemon=True)
    t1.start()
    t2.start()
    t1.join()
@@ -124,7 +133,8 @@ def test(delay):
 
 if __name__ == "__main__":
    print("Пример 1: пользователь закрыл камеру хранения до напоминания:\n")
-   test(5)
+   test_my_box(5)
+   sleep(3)
    print("\nПример 2: пользователь закрыл камеру хранения после напоминания:\n")
-   test(15)
+   test_my_box(15)
    

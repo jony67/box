@@ -50,23 +50,23 @@ async def open_box(user: User) -> dict:
     if (state):
         if (user.password == settings_Dev.MY_PASWD):
             if (state == 'Введите пароль'): 
-                my_box.good_password()
-                state = my_box.state           
-                answer = {"stateBox": state}
+                my_box.good_password()        
+                answer = {"stateBox": my_box.state}
             else:
-                answer = {"stateBox": state}
+                answer = {"stateBox": my_box.state}
     
         else:
-            my_box.bad_password()
-            state = my_box.state
-            answer = {"stateBox": state}
+            if (my_box.state == 'Введите пароль'):
+                my_box.bad_password()
+                answer = {"stateBox": my_box.state}
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+	                detail="Проблемы с бэкендом...",
+                    )
         return answer
     
-    raise HTTPException(
-        status_code=status.HTTP_204_NO_CONTENT,
-	    detail="Проблемы с бэкендом...",
-        )
-    
+            
 
 @router.get('/repeat')
 async def repeat_input() -> dict:
