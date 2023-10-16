@@ -1,27 +1,29 @@
+import json
 from time import sleep
 from fastapi.testclient import TestClient
 from backend.app.api import app
 #from backend.settings import settings
 # Отладка
 from backend.settings import settings_Dev
-from backend.app.MyBox import MyBox
+from backend.app.MyBox import MyBox, main
+
 
 def test_box():
-    state = MyBox()
-    assert state.state == 'Введите пароль'
-    state.bad_password()
-    assert state.state == 'Неверный пароль'
-    state.repeat()
-    assert state.state == 'Введите пароль'
-    state.good_password()
-    assert state.state == 'Дверь открыта'
-    sleep(state.TIMEOUT+1)
-    assert state.state == 'Закройте дверь'
-    state.close()
-    assert state.state == 'Введите пароль'
+    machine = MyBox()
+    assert machine.state == 'Введите пароль'
+    machine.bad_password()
+    assert machine.state == 'Неверный пароль'
+    machine.repeat()
+    assert machine.state == 'Введите пароль'
+    machine.good_password()
+    assert machine.state == 'Дверь открыта'
+    sleep(machine.TIMEOUT+1)
+    assert machine.state == 'Закройте дверь'
+    machine.close()
+    assert machine.state == 'Введите пароль'
 
 
-def test_main():
+def test_home():
     client = TestClient(app)
     result = client.get('/')
     assert result.status_code == 200
@@ -30,10 +32,39 @@ def test_main():
     }
 
 def test_state():
-    state = MyBox().state
+    machine = MyBox()
     client = TestClient(app)
     result = client.get('/state')
     assert result.status_code == 200
     assert result.json() == {
-        "stateBox": state
+        "stateBox": machine.state
+    }
+
+def test_open():
+    machine = MyBox()
+    client = TestClient(app)
+    result = client.post('/open', json={'password':'qwerty'})
+    machine.good_password()
+    assert result.status_code == 200
+    assert result.json() == {
+        "stateBox": machine.state
+    }
+
+
+def test_close():
+    machine = MyBox()
+    client = TestClient(app)
+    result = client.get('/close')
+    assert result.status_code == 200
+    assert result.json() == {
+        "stateBox": machine.state
+    }
+
+def test_repeat():
+    machine = MyBox()
+    client = TestClient(app)
+    result = client.get('/repeat')
+    assert result.status_code == 200
+    assert result.json() == {
+        "stateBox": machine.state
     }
