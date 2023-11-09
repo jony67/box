@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-"""
-    Графическая модель конечного автомата на Python
-    (https://github.com/pytransitions/transitions)
+"""Графическая модель конечного автомата на Python
+(https://github.com/pytransitions/transitions)
 
     @author: sev
 """
@@ -21,8 +20,7 @@ from IPython.display import Image, display
 from MyBox import MyBox
 
 
-class Model():
-    
+class Model(): 
     # Графический объект создается машиной состояний
     def show_graph(self, **kwargs):
         stream = io.BytesIO()

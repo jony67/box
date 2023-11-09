@@ -37,8 +37,8 @@ class Settings(BaseSettings):
     """
     MY_PASWD: str
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
-        'http://127.0.0.1:8000/',
-        'http://localhost:8000/'
+        "http://127.0.0.1:3000",
+        "http://localhost:3000"
         ]
     # Необязательные поля
     APP_NAME: Optional[str] = None

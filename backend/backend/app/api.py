@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""API
+
+@author: sev
+"""
+
 from fastapi import FastAPI
 from backend.app.box_router import router
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,10 +16,10 @@ app = FastAPI(
     description=settings_Dev.DESCRIPTION
     )
 
-
 app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings_Dev.BACKEND_CORS_ORIGINS,
+        allow_origins=str(settings_Dev.BACKEND_CORS_ORIGINS),
+        #allow_origins=["*"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"]
