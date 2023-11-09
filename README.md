@@ -17,6 +17,10 @@ API реализован с использованием фреймворка Fa
 |[![React-1](/_jpg/3.jpg)][![React-2](/_jpg/4.jpg)]|
 |[![React-3](/_jpg/5.jpg)][![React-4](/_jpg/6.jpg)]|
 |[![React-5](/_jpg/7.jpg)][![React-6](/_jpg/8.jpg)]|
+<p align="left">
+  <img alt="React-1" src="/_jpg/3.jpg" width="48%">&nbsp;
+  <img alt="React-2" src="/_jpg/4.jpg" width="48%">&nbsp;
+</p>
 
 [:arrow_up:Оглавление](#Оглавление)
 
