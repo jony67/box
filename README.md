@@ -27,7 +27,7 @@ API реализован с использованием фреймворка Fa
 [:arrow_up:Оглавление](#Оглавление)
 
 ## Тесты (Pytest)
-Бэкенд покрыт тестами на 100%
+Бэкенд покрыт тестами на 100%__
 [![Покрытие тестами](/_jpg/9.jpg)]
 
 [:arrow_up:Оглавление](#Оглавление)
@@ -54,20 +54,22 @@ API реализован с использованием фреймворка Fa
 ## Установка и запуск в локальной среде
 Открыть терминал и выполнить:
 ```
-$ git clone https://github.com/jony67/box
-$ cd box/backend
-$ poetry install
-$ .venv/Scripts/activate
-$ python backend/main.py
+	$ git clone https://github.com/jony67/box
+	$ cd box/backend
+	$ poetry install
+	$ .venv/Scripts/activate
+	$ python backend/main.py
 ```
 Открыть новый терминал, перейти в каталог box/backend и выполнить:
-```$ poetry run curl http://127.0.0.1:8000/
+```
+	$ poetry run curl http://127.0.0.1:8000/
 ```
 Результат:
-`{"Status":"OK"}`
+`{"Status":"OK"}`__
 Бэкенд запущен.
-```$ yarn install
-   $ yarn dev
+```
+	$ yarn install
+	$ yarn dev
 ```
 Запустить веб-браузер, набрать в адресной строке:
 http://127.0.0.1:3000/
