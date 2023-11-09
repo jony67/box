@@ -15,16 +15,16 @@ API реализован с использованием фреймворка Fa
 ### - Фронтенд:
 Фронтенд представляет собой web приложение, реализованное с использованием JavaScript библиотеки React и выполняет функцию графического интерфейса системы.
 <p align="left">
-  <img alt="React-1" src="/_jpg/3.jpg" width="50%">&nbsp;
-  <img alt="React-2" src="/_jpg/4.jpg" width="50%">&nbsp;
+  <img alt="React-1" src="/_jpg/3.jpg" width="48%">&nbsp;
+  <img alt="React-2" src="/_jpg/4.jpg" width="48%">&nbsp;
 </p>
 <p align="left">
-  <img alt="React-3" src="/_jpg/5.jpg" width="50%">&nbsp;
-  <img alt="React-4" src="/_jpg/6.jpg" width="50%">&nbsp;
+  <img alt="React-3" src="/_jpg/5.jpg" width="48%">&nbsp;
+  <img alt="React-4" src="/_jpg/6.jpg" width="48%">&nbsp;
 </p>
 <p align="left">
-  <img alt="React-5" src="/_jpg/7.jpg" width="50%">&nbsp;
-  <img alt="React-6" src="/_jpg/8.jpg" width="50%">&nbsp;
+  <img alt="React-5" src="/_jpg/7.jpg" width="48%">&nbsp;
+  <img alt="React-6" src="/_jpg/8.jpg" width="48%">&nbsp;
 </p>
 
 [:arrow_up:Оглавление](#Оглавление)
