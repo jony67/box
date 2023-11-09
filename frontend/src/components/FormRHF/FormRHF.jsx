@@ -124,8 +124,6 @@ export default function FormRHF() {
         </form>
         </>
         );   
-
-
     }
 
   if (state === "Неверный пароль") {
